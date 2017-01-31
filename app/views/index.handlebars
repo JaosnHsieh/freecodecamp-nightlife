@@ -1,0 +1,74 @@
+<div ng-controller="mainCtrl">
+  <header>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          
+
+          <h1>Where are you going tonight?</h1>
+        </div>
+      </div>
+    </div>
+  </header>
+  <section>
+    <div class="container">
+      <form class="form-horizontal" ng-submit="search()">
+        <div class="form-group no-gutter">
+          <div class="col-sm-11">
+            {{#if lastKeywords}}
+              <input class="form-control" ng-model="keywords" type="text" ng-init="keywords='{{lastKeywords}}'">
+            {{else}}
+              <input class="form-control" ng-model="keywords" type="text">
+            {{/if}}
+            
+            </div>
+          
+          <div class="col-sm-1">
+
+              <button type="button" class="btn btn-dark btn-block search-button" ng-click="search()">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+
+          </div>
+        </div>
+      </form>
+
+      <img ng-show="searchLoading" class="img-responsive center-block" src="/img/rolling.svg">
+      
+      
+      <div class="search-results">
+        <div class="row" ng-repeat="place in results.results">
+          <div class="box clearfix">
+          <div class="pic">
+              <img class="img-responsive" ng-src="{[{ 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=160&photoreference='
+            +place.photos[0].photo_reference+'&key=AIzaSyCluxWbcOeNk6hKU3QPBwkFwicB-NW5H6k' }]}" alt="">
+          
+          </div>
+
+          <h2 class="title">{[{place.name}]}</h2>
+          <button ng-disabled="place.goingLoading" ng-click="going(place);" ng-class="place.user_clicked?'btn-primary':'btn-default'" class="btn goingBtn">{[{place.my_place_count}]} going</button>
+          <i class="fa fa-check" aria-hidden="true" ng-show="place.user_clicked&&!place.goingLoading"></i>
+          <img ng-show="place.goingLoading" class="going-loading-img" src="/img/reload.svg">
+              
+          <p>
+            Address: {[{ place.formatted_address}]}
+          </p>
+          <p>
+            Photo credit:
+            <i ng-bind-html="place.photos[0].html_attributions[0]" class="ng-binding"><a href="https://maps.google.com/maps/contrib/104394770410393587278/photos">ken ari</a></i>
+          </p>
+          </div>
+          
+     
+          
+        </div>
+{{!--
+        <pre>
+                 {[{results|json}]}
+
+        </pre>
+          --}}
+      </div>
+    </div>
+  </section>
+</div>
